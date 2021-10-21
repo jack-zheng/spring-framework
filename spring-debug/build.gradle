@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+}
+
+group 'org.springframework'
+version '5.2.18.RELEASE'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile(project(":spring-context"))
+
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+//    compileOnly 'org.projectlombok:lombok:1.18.8'
+//    testCompileOnly 'org.projectlombok:lombok:1.18.8'
+//    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+test {
+    useJUnitPlatform()
+}

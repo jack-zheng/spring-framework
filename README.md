@@ -1,30 +1,46 @@
-# <img src="src/docs/asciidoc/images/spring-framework.png" width="80" height="80"> Spring Framework [![Build Status](https://ci.spring.io/api/v1/teams/spring-framework/pipelines/spring-framework-5.2.x/jobs/build/badge)](https://ci.spring.io/teams/spring-framework/pipelines/spring-framework-5.2.x?groups=Build")
+# spring-framework-5.2.x
 
-This is the home of the Spring Framework: the foundation for all [Spring projects](https://spring.io/projects). Collectively the Spring Framework and the family of Spring projects are often referred to simply as "Spring". 
+提示：构建源码之前，将你系统中的 GRADLE_HOME 设置直接删除，使用项目指定的 gradle 构建，不然各种出问题
 
-Spring provides everything required beyond the Java programming language for creating enterprise applications for a wide range of scenarios and architectures. Please read the [Overview](https://docs.spring.io/spring/docs/current/spring-framework-reference/overview.html#spring-introduction) section as reference for a more complete introduction.
+1. 下载源码
+2. 修改 build.gradle 和 settings.gradle 再源中添加国内源
+3. cd 到 spring-framework 文件夹下运行 `gradlew :spring-oxm:compileTestJava` 和 `gradlew :spring-core:compileTestJava` 预编译比较模块
+4. 打开 idea -> New -> New project from existing source -> 选则 spring-framework 下的 build.gradle 文件
+5. 等待自动构建，终端会出现 gradle 构建成功提示
+6. 新建 gradle module 'spring-debug' 用于测试
 
-## Code of Conduct
+## 测试遇到的问题
 
-This project is governed by the [Spring Code of Conduct](CODE_OF_CONDUCT.adoc). By participating, you are expected to uphold this code of conduct. Please report unacceptable behavior to spring-code-of-conduct@pivotal.io.
+添加依赖
 
-## Access to Binaries
+```gradle
+// 方便测试
+compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
+implementation(project(":spring-context"))
+```
 
-For access to artifacts or a distribution zip, see the [Spring Framework Artifacts](https://github.com/spring-projects/spring-framework/wiki/Spring-Framework-Artifacts) wiki page.
+运行失败，抛错
 
-## Documentation
+```txt
+...spring-framework\spring-core\src\main\java\org\springframework\core\ReactiveAdapterRegistry.java
+Error:(346, 51) java: 找不到符号
+  符号:   变量 CoroutinesUtils
+  位置: 类 org.springframework.core.ReactiveAdapterRegistry.CoroutinesRegistrar
+```
 
-The Spring Framework maintains reference documentation ([published](https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/) and [source](src/docs/asciidoc)), Github [wiki pages](https://github.com/spring-projects/spring-framework/wiki), and an
-[API reference](https://docs.spring.io/spring-framework/docs/current/javadoc-api/). There are also [guides and tutorials](https://spring.io/guides) across Spring projects.
+在 idea 左侧找到 'spring-core/kotlin-coroutines/build/libs/kotlin-coroutines-5.2.18.RELEASE.jar' 文件，右键 Add as Library, OK.
 
-## Build from Source
+然后顶部选择 Build -> Rebuild Project. 之后还是失败了，提示 AOP 相关的类编译失败, 参考[csdn](https://blog.csdn.net/qq_38762237/article/details/107815524).
 
-See the [Build from Source](https://github.com/spring-projects/spring-framework/wiki/Build-from-Source) Wiki page and the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+## Gradle zip 准备
 
-## Stay in Touch
+步骤 3 一开始会下载对应的 gradle 包，如果下载很慢，可以先查看根目录下 gradle/wrapper/gradle-wrapper.properties 中 gradle 版本，去官网下载一个。
 
-Follow [@SpringCentral](https://twitter.com/springcentral), [@SpringFramework](https://twitter.com/springframework), and its [team members](https://twitter.com/springframework/lists/team/members) on Twitter. In-depth articles can be found at [The Spring Blog](https://spring.io/blog/), and releases are announced via our [news feed](https://spring.io/blog/category/news).
+然后修改 properties 中的配置，直接指向本地文件
 
-## License
+```config
+-- windows 配置
+distributionUrl=file:///C:/Users/jack/Downloads/gradle-5.6.3-all.zip
+```
 
-The Spring Framework is released under version 2.0 of the [Apache License](https://www.apache.org/licenses/LICENSE-2.0).
+

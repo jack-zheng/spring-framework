@@ -9,6 +9,8 @@
 5. 等待自动构建，终端会出现 gradle 构建成功提示
 6. 新建 gradle module 'spring-debug' 用于测试
 
+PS: 貌似默认的 .gitigore 规则中对 target/ 的忽略导致了我 check in 的时候少了 aop 下的 target 文件夹。。。
+
 ## 测试遇到的问题
 
 添加依赖

@@ -25,14 +25,18 @@ implementation(project(":spring-context"))
 
 ```txt
 ...spring-framework\spring-core\src\main\java\org\springframework\core\ReactiveAdapterRegistry.java
-Error:(346, 51) java: 找不到符号
-  符号:   变量 CoroutinesUtils
-  位置: 类 org.springframework.core.ReactiveAdapterRegistry.CoroutinesRegistrar
+Error:(346, 51) java: cannot find symbol
+  symbol:   variable CoroutinesUtils
+  location: class org.springframework.core.ReactiveAdapterRegistry.CoroutinesRegistrar
 ```
 
 在 idea 左侧找到 'spring-core/kotlin-coroutines/build/libs/kotlin-coroutines-5.2.18.RELEASE.jar' 文件，右键 Add as Library, OK.
 
-然后顶部选择 Build -> Rebuild Project. 之后还是失败了，提示 AOP 相关的类编译失败, 参考[csdn](https://blog.csdn.net/qq_38762237/article/details/107815524).
+然后顶部选择 Build -> Rebuild Project. 之后还是失败了，提示 aspects 相关的类编译失败. 不过没关系, 前面测试 module 的 case 已经可以运行了，等能坚持看到 aspects 再修这个问题。
+
+修复可以参考 [CSDN](https://blog.csdn.net/qq_38762237/article/details/107815524).
+
+如果有强迫症，可以右键spring-aspects模块-> 选择 Load/Unload modules -> 将spring-aspects加入unload列表即可. 再重新 rebuild 一下 project，构建成功。
 
 ## Gradle zip 准备
 

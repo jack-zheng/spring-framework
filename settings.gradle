@@ -34,10 +34,11 @@ include "spring-websocket"
 include "framework-bom"
 include "integration-tests"
 
+include 'spring-reading'
+
 rootProject.name = "spring"
 rootProject.children.each {project ->
 	project.buildFileName = "${project.name}.gradle"
 }
-include 'spring-debug'
-include 'spring-debug'
+
 

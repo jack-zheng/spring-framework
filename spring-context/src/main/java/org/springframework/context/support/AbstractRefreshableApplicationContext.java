@@ -119,14 +119,20 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	 */
 	@Override
 	protected final void refreshBeanFactory() throws BeansException {
+		// 如果已经有工厂实例了，销毁并重新创建一个
 		if (hasBeanFactory()) {
 			destroyBeans();
 			closeBeanFactory();
 		}
 		try {
+			// 创建工厂实例，默认的类型为 DefaultListableBeanFactory
 			DefaultListableBeanFactory beanFactory = createBeanFactory();
+			// 设置 id
 			beanFactory.setSerializationId(getId());
+			// 定制化一些工厂属性，默认实现中只会判断 definition override 和 循环依赖 两个属性
 			customizeBeanFactory(beanFactory);
+			// 加载 bean definition，这块感觉是比较重头的戏
+			// 根据加载类型的不同，有不同的实现。我们比较熟悉的有 xml 和 annotation，其他实现还有 groovy 等
 			loadBeanDefinitions(beanFactory);
 			this.beanFactory = beanFactory;
 		}

@@ -520,16 +520,20 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.
+			// 拿到工厂类的时候，该工厂中已经包含了 bean definition 的所有信息了！！！
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// Prepare the bean factory for use in this context.
+			// 定制属性，比如 env, classloader, context, 默认的 BeanPostProcessor 等
 			prepareBeanFactory(beanFactory);
 
 			try {
 				// Allows post-processing of the bean factory in context subclasses.
+				// 留空，为子类留的接口
 				postProcessBeanFactory(beanFactory);
 
 				// Invoke factory processors registered as beans in the context.
+				// 处理所有注册的 BeanFactoryPostProcessor
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
@@ -585,6 +589,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	protected void prepareRefresh() {
 		// Switch to active.
 		this.startupDate = System.currentTimeMillis();
+		// 状态位 closed, active 置位
 		this.closed.set(false);
 		this.active.set(true);
 
@@ -598,10 +603,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		}
 
 		// Initialize any placeholder property sources in the context environment.
+		// 留给子类的接口，可以作为 property 的加载入口
 		initPropertySources();
 
 		// Validate that all properties marked as required are resolvable:
 		// see ConfigurablePropertyResolver#setRequiredProperties
+		// 必要属性的检测，如果没有设置，则默认跳过检测
 		getEnvironment().validateRequiredProperties();
 
 		// Store pre-refresh ApplicationListeners...

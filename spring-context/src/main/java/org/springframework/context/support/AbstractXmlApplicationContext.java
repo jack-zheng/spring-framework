@@ -84,6 +84,8 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 
 		// Configure the bean definition reader with this context's
 		// resource loading environment.
+		// beanFactory 实现了很多接口，比如 environment，比如 resourceLoader 什么的，
+		// 所以这里经常能看到 set 方法直接传入 this 的，一开始看还是很困惑的
 		beanDefinitionReader.setEnvironment(this.getEnvironment());
 		beanDefinitionReader.setResourceLoader(this);
 		beanDefinitionReader.setEntityResolver(new ResourceEntityResolver(this));
@@ -91,6 +93,9 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 		// Allow a subclass to provide custom initialization of the reader,
 		// then proceed with actually loading the bean definitions.
 		initBeanDefinitionReader(beanDefinitionReader);
+		// 这里是真正干活的地方，设置完 reader 之后，从 xml 中加载配置
+		// 这步结束之后，所有的 definition 就都加载到 factory 中了
+		// 问：那 bean 实例化做了吗？- 应该没有，回头看一下 refresh 中的方法，实例化是在后面做的
 		loadBeanDefinitions(beanDefinitionReader);
 	}
 

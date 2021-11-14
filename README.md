@@ -36,7 +36,9 @@ Error:(346, 51) java: cannot find symbol
 
 修复可以参考 [CSDN](https://blog.csdn.net/qq_38762237/article/details/107815524).
 
-如果有强迫症，可以右键spring-aspects模块-> 选择 Load/Unload modules -> 将spring-aspects加入unload列表即可. 再重新 rebuild 一下 project，构建成功。
+如果有强迫症，可以右键 spring-aspects 模块-> 选择 Load/Unload modules -> 将spring-aspects加入unload列表即可. 再重新 rebuild 一下 project，构建成功。
+
+也可以在 settings.gradle 中将 include spring-aspects 这个一行注释掉，效果一样
 
 ## Gradle zip 准备
 

@@ -63,6 +63,11 @@ public class BeanFactoryPostProcessorTests {
 		assertThat(bfpp.wasCalled).isTrue();
 	}
 
+	/**
+	 * 前面的那个直接 ac.addBeanFactoryPostProcessor(bfpp); 之后调用 refresh() 能置位我还能理解，这里直接 registerSingleton() 也能？是不是哪里有什么骚操作？
+	 *
+	 * 主管臆测一下，应该是注册 bean 的时候会根据它的类型做判断，如果是 processor 会将它放到 processor 的列表中
+	 **/
 	@Test
 	public void testDefinedBeanFactoryPostProcessor() {
 		StaticApplicationContext ac = new StaticApplicationContext();

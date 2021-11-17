@@ -20,6 +20,14 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 
 /**
+ * 从名字来看，可以知道它是作用于 registry 的。ApplicationContext 的继承关系可以知道，他是实现了 registry 接口的。
+ * 我们通过这个 BeanDefinitionRegistryPostProcessor 可以在处理 BeanFactoryPostProcessor 之前对 registry 做一些定制。
+ *
+ * 从目前我收集到的信息推测，这个类主要做的应该是在 context 加载完 bean definition 之后，通过这个 processor 来自定义 bean
+ * postProcessBeanDefinitionRegistry() 负责注册 definition, 而父类接口的 postProcessBeanFactory() 用来处理 bean 相关的事物
+ *
+ * mybatis 的 MapperScannerConfigurer 类就是 BeanFactoryPostProcessor 的一个实现，用来扫把的，不过我还没看过，很多文章有提到过这个
+ *
  * Extension to the standard {@link BeanFactoryPostProcessor} SPI, allowing for
  * the registration of further bean definitions <i>before</i> regular
  * BeanFactoryPostProcessor detection kicks in. In particular,

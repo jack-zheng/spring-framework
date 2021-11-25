@@ -40,6 +40,14 @@ Error:(346, 51) java: cannot find symbol
 
 也可以在 settings.gradle 中将 include spring-aspects 这个一行注释掉，效果一样
 
+## 重新 import 项目报错
+
+之前的 Idea 过期了，删了装了新版，各种问题
+
+1. gradle build 能过但是 idea 里面会爆红 - File -> invalid caches 之后能解决问题
+2. 将 Gradle 的构建方式换成 Idea 之后会抛 kotlin 相关的错误 - 最终没有很好的解决办法，但是只是把 build and run 改为 gradle 还是可以 work 的，算是一个折中方案把
+3. spring-debug 那个 module 经常报错，还不好修，再新建 module 就没什么问题 - 打算把这个测试 module 删了，以后再说，影响我看代码速度和心情
+
 ## Gradle zip 准备
 
 步骤 3 一开始会下载对应的 gradle 包，如果下载很慢，可以先查看根目录下 gradle/wrapper/gradle-wrapper.properties 中 gradle 版本，去官网下载一个。

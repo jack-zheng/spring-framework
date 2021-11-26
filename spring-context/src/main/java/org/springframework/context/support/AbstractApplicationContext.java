@@ -537,6 +537,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
+				// 处理的主要逻辑存在的地方和上一个方法一样，都是 PostProcessorRegistrationDelegate。这点我还是挺意外的
+				// 并没有做实实在在的逻辑处理，只是将对 post processor 按顺序塞到 factory 对应的 list 中了而已
 				registerBeanPostProcessors(beanFactory);
 
 				// Initialize message source for this context.
@@ -546,12 +548,14 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				initApplicationEventMulticaster();
 
 				// Initialize other special beans in specific context subclasses.
+				// 空方法，留给子类添加逻辑的接口
 				onRefresh();
 
 				// Check for listener beans and register them.
 				registerListeners();
 
 				// Instantiate all remaining (non-lazy-init) singletons.
+				// 这个方法应该是重头戏了，他会做实例化对象
 				finishBeanFactoryInitialization(beanFactory);
 
 				// Last step: publish corresponding event.
@@ -880,9 +884,16 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		beanFactory.setTempClassLoader(null);
 
 		// Allow for caching all bean definition metadata, not expecting further changes.
+		// 这个挺有意思，具体实现方式是采用一个 flag 作为标志位，并且将之前存在 list 中的 definitions 转为存到 array 中
 		beanFactory.freezeConfiguration();
 
 		// Instantiate all remaining (non-lazy-init) singletons.
+		// 实例化在这个方法中完成
+		// 查这部分实现的时候，有篇博文给出了 MergedBeanDefinition 的解释
+		//之所以称之为 "合并的"，是因为存在 "子定义" 和 "父定义" 的情况。对于一个 bean 定义来说，可能存在以下几种情况：
+		//		该 BeanDefinition 存在 "父定义"：首先使用 "父定义" 的参数构建一个 RootBeanDefinition，然后再使用该 BeanDefinition 的参数来进行覆盖。
+		//		该 BeanDefinition 不存在 "父定义"，并且该 BeanDefinition 的类型是 RootBeanDefinition：直接返回该 RootBeanDefinition 的一个克隆。
+		//		该 BeanDefinition 不存在 "父定义"，但是该 BeanDefinition 的类型不是 RootBeanDefinition：使用该 BeanDefinition 的参数构建一个 RootBeanDefinition。
 		beanFactory.preInstantiateSingletons();
 	}
 

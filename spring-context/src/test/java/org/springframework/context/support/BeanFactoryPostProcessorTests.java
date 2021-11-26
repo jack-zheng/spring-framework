@@ -66,7 +66,9 @@ public class BeanFactoryPostProcessorTests {
 	/**
 	 * 前面的那个直接 ac.addBeanFactoryPostProcessor(bfpp); 之后调用 refresh() 能置位我还能理解，这里直接 registerSingleton() 也能？是不是哪里有什么骚操作？
 	 *
-	 * 主管臆测一下，应该是注册 bean 的时候会根据它的类型做判断，如果是 processor 会将它放到 processor 的列表中
+	 * 主观臆测一下，应该是注册 bean 的时候会根据它的类型做判断，如果是 processor 会将它放到 processor 的列表中
+	 * - 答：application context 中有两个地方可以存储 BeanFactoryPostProcessor， 一个是类的 list 变量，这个基本是给子类用的，
+	 * 另一种是 factory 中注册，这个是我们平时用的那种
 	 **/
 	@Test
 	public void testDefinedBeanFactoryPostProcessor() {
@@ -96,6 +98,9 @@ public class BeanFactoryPostProcessorTests {
 		assertThat(bfpp.wasCalled).isTrue();
 	}
 
+	/**
+	 * 大概是用了测试 processor 测试条件的 - refresh() 方法
+	 */
 	@Test
 	public void testBeanFactoryPostProcessorNotExecutedByBeanFactory() {
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
@@ -111,7 +116,9 @@ public class BeanFactoryPostProcessorTests {
 		StaticApplicationContext ac = new StaticApplicationContext();
 		ac.registerSingleton("tb1", TestBean.class);
 		ac.registerSingleton("tb2", TestBean.class);
+		// PrioritizedBeanDefinitionRegistryPostProcessor 会注册一个名为 bfpp1 的 processor
 		ac.addBeanFactoryPostProcessor(new PrioritizedBeanDefinitionRegistryPostProcessor());
+		// TestBeanDefinitionRegistryPostProcessor 会注册一个名为 bfpp2 的 processor
 		TestBeanDefinitionRegistryPostProcessor bdrpp = new TestBeanDefinitionRegistryPostProcessor();
 		ac.addBeanFactoryPostProcessor(bdrpp);
 		assertThat(bdrpp.wasCalled).isFalse();

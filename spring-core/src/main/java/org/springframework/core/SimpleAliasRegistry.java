@@ -31,6 +31,16 @@ import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
 /**
+ * 这个 SimpleAliasRegistry 的实现很有意思，既然是存放一个 name-alias 的键值对，
+ * 我第一反应就是将 name 当 key, alias 当 value 了。 然后他的处理逻辑就把我看懵逼了，一时竟没有反应过来
+ * 再仔细一看，他是反着的，将 alias 当 key, name 当 value, 这样后续 getAlias 就很好处理了，就是遍历一下 map, 就行了。
+ *
+ * 试想一下，如果没有是使用这种方式，而是用 name-alias 这种方式，就需要字符串操作了。比如 removeAlias，就需要我们对 alias 拆解拼接了，效率应该很低
+ *
+ * 再细看了一下这个类，发现还有其他蹊跷，按理说如果只是 k-v 结构不需要这么复杂的代码才对，对这个 Class 写了一个测试，发现他还支持为 alias 设置 alias 的骚操作。
+ * 比如我可以设置 [a-a_1], [a_1-a_a_1] 这样的配对情况，那么在我取 a 的 alias 则会返回 a_1, a_a_1, 这样的话 retrieve 中的迭代调用就能解释了
+ *
+ *
  * Simple implementation of the {@link AliasRegistry} interface.
  * <p>Serves as base class for
  * {@link org.springframework.beans.factory.support.BeanDefinitionRegistry}
@@ -76,6 +86,7 @@ public class SimpleAliasRegistry implements AliasRegistry {
 								registeredName + "' with new target name '" + name + "'");
 					}
 				}
+				// 由于可以多层嵌套的去注册 alias, 所以要避免循环依赖。比如 a - b - a 这样的环是不被允许的。
 				checkForAliasCircle(name, alias);
 				this.aliasMap.put(alias, name);
 				if (logger.isTraceEnabled()) {

@@ -28,6 +28,8 @@ import org.springframework.lang.Nullable;
 public interface AttributeAccessor {
 
 	/**
+	 * 对 attribute 的 CRUD 操作的接口定义
+	 *
 	 * Set the attribute defined by {@code name} to the supplied {@code value}.
 	 * If {@code value} is {@code null}, the attribute is {@link #removeAttribute removed}.
 	 * <p>In general, users should take care to prevent overlaps with other

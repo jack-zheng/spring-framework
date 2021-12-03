@@ -25,6 +25,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 /**
+ * AttributeAccessor 的抽象实现类，内建了一个 map 作为接口方法的操作对象，存储内容为 string-object 对
+ *
  * Support class for {@link AttributeAccessor AttributeAccessors}, providing
  * a base implementation of all methods. To be extended by subclasses.
  *

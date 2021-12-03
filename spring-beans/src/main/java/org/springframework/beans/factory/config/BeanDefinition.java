@@ -23,9 +23,13 @@ import org.springframework.core.ResolvableType;
 import org.springframework.lang.Nullable;
 
 /**
+ * 用来描述一个 bean 实例，比如包含哪些属性，构造函数，以及其他实例化是要用到的信息。
+ *
  * A BeanDefinition describes a bean instance, which has property values,
  * constructor argument values, and further information supplied by
  * concrete implementations.
+ *
+ * 它是一个最小集合接口，主要用于和 BeanFactoryPostProcessor 相互作用
  *
  * <p>This is just a minimal interface: The main intention is to allow a
  * {@link BeanFactoryPostProcessor} to introspect and modify property values

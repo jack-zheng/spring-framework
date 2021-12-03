@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+}
+
+group 'org.springframework'
+version '5.2.18.RELEASE'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation(project(":spring-context"))
+    // https://mvnrepository.com/artifact/org.testng/testng
+    implementation 'org.testng:testng:6.14.3'
+
+}
+
+test {
+    useJUnitPlatform()
+}

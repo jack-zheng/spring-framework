@@ -18,12 +18,42 @@ package org.springframework.core;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Juergen Hoeller
  */
 class SimpleAliasRegistryTests {
+
+	@Test
+	void test_basic_function() {
+		SimpleAliasRegistry registry = new SimpleAliasRegistry();
+		registry.registerAlias("a", "a_1");
+		System.out.println(Arrays.toString(registry.getAliases("a")));
+		registry.registerAlias("a", "a_2");
+		System.out.println(Arrays.toString(registry.getAliases("a")));
+
+		registry.registerAlias("a_1", "a_a_1");
+		System.out.println(Arrays.toString(registry.getAliases("a")));
+		System.out.println(Arrays.toString(registry.getAliases("a_1")));
+
+		//registry.registerAlias("a_a_1", "a");
+	}
+
+	@Test
+	void test_if_key_or_value_is_empty_or_null() {
+		SimpleAliasRegistry registry = new SimpleAliasRegistry();
+		// 运行就直接抛异常了
+		// java.lang.IllegalArgumentException: 'name' must not be empty
+		//registry.registerAlias("", "testAlias");
+		//registry.registerAlias("name", "");
+		//registry.registerAlias(null, "value");
+		//registry.registerAlias("key", null);
+	}
 
 	@Test
 	void aliasChaining() {

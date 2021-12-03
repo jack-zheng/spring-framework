@@ -890,7 +890,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		// Instantiate all remaining (non-lazy-init) singletons.
 		// 实例化在这个方法中完成
 		// 查这部分实现的时候，有篇博文给出了 MergedBeanDefinition 的解释
-		//之所以称之为 "合并的"，是因为存在 "子定义" 和 "父定义" 的情况。对于一个 bean 定义来说，可能存在以下几种情况：
+		// 之所以称之为 "合并的"，是因为存在 "子定义" 和 "父定义" 的情况。对于一个 bean 定义来说，可能存在以下几种情况：
 		//		该 BeanDefinition 存在 "父定义"：首先使用 "父定义" 的参数构建一个 RootBeanDefinition，然后再使用该 BeanDefinition 的参数来进行覆盖。
 		//		该 BeanDefinition 不存在 "父定义"，并且该 BeanDefinition 的类型是 RootBeanDefinition：直接返回该 RootBeanDefinition 的一个克隆。
 		//		该 BeanDefinition 不存在 "父定义"，但是该 BeanDefinition 的类型不是 RootBeanDefinition：使用该 BeanDefinition 的参数构建一个 RootBeanDefinition。

@@ -894,6 +894,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 					}
 				}
 				else {
+					// 真正实例化 bean 的入口
 					getBean(beanName);
 				}
 			}

@@ -95,7 +95,8 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 		initBeanDefinitionReader(beanDefinitionReader);
 		// 这里是真正干活的地方，设置完 reader 之后，从 xml 中加载配置
 		// 这步结束之后，所有的 definition 就都加载到 factory 中了
-		// 问：那 bean 实例化做了吗？- 应该没有，回头看一下 refresh 中的方法，实例化是在后面做的
+		// Q：那 bean 实例化做了吗?
+		// A: 没有，实例化在最后面
 		loadBeanDefinitions(beanDefinitionReader);
 	}
 
